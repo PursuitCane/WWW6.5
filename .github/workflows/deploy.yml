@@ -3,7 +3,7 @@ name: Deploy Solidity GUI
 on:
   push:
     branches:
-      - master # 监听 master 分支的变动
+      - dev # 🎯 修改点 1：把监听的分支从 master 改成了 dev
 
 permissions:
   contents: write
@@ -16,6 +16,12 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
+      # 🎯 修改点 2：新增配置 Node 环境的步骤，这能极大减少玄学报错
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # 建议用稳定的 20 版本
+
       - name: Install and Build 🔧
         run: |
           cd Tenlossiby/GUI
@@ -25,6 +31,6 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: Tenlossiby/GUI/dist # 部署打包后的 dist 文件夹
-          branch: gh-pages # 部署到 gh-pages 分支
+          folder: Tenlossiby/GUI/dist
+          branch: gh-pages # 脚本会把编译好的网页放到这个独立分支里
           clean: true
